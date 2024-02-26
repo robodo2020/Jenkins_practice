@@ -14,7 +14,7 @@ pipeline {
   }
   stages {
     stage('init') {
-      stpes {
+      steps {
         script {
           // load the groovy file, and gv we define it as global var above
           // which allows us to use the external script
