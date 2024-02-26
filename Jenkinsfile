@@ -2,11 +2,11 @@ pipeline {
   // the top level
   agent any // define the env for pipeline to execute (like docker, which image)
   parameters {
-    string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
+    // string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
     choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
-    booleanParam(name: 'executeTests', defaultValue: true, descrition: '')
+    booleanParam(name: 'executeTests', defaultValue: true, description: '')
   }
-  evnironment {
+  environment {
     NEV_VERSION = '1.0.1'
     SERVER_CREDENTIALS = credentials('server-credentials') // defined at jenkins global credential, and should use the ID to define the variable name
   }
