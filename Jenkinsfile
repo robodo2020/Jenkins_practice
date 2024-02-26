@@ -7,7 +7,8 @@ pipeline {
   }
   environment {
     NEV_VERSION = '1.0.1'
-    // SERVER_CREDENTIALS = credentials('server-credentials') // defined at jenkins global credential, and should use the ID to define the variable name
+    // defined at jenkins global credential, and should use the ID to define the variable name
+    SERVER_CREDENTIALS = credentials('server-credentials')
   }
   stages {
     stage('build') {
@@ -35,12 +36,13 @@ pipeline {
       steps {
           echo 'deploying the apps...'
           echo "deploying version ${params.VERSION}"
-          // echo "deploying with ${SERVER_CREDENTIALS}"
-          withCredentials([
-            usernamePasword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD) // usernamePasword is bc the Jenkins I defined the credential is this type
-          ]) {
-            sh "some script ${USER} ${PWD}" // need credentials plugin
-          }
+          echo "deploying with ${SERVER_CREDENTIALS}"
+      // withCredentials([
+      //   // usernamePasword is bc the Jenkins I defined the credential is this type
+      //   usernamePasword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD)
+      // ]) {
+      //   sh "some script ${USER} ${PWD}" // need credentials plugin
+      // }
       }
     }
   }
