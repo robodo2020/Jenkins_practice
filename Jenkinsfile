@@ -37,12 +37,13 @@ pipeline {
           echo 'deploying the apps...'
           echo "deploying version ${params.VERSION}"
           echo "deploying with ${SERVER_CREDENTIALS}"
-      // withCredentials([
-      //   // usernamePasword is bc the Jenkins I defined the credential is this type
-      //   usernamePasword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD)
-      // ]) {
-      //   sh "some script ${USER} ${PWD}" // need credentials plugin
-      // }
+
+          withCredentials([
+          // usernamePasword is bc the Jenkins I defined the credential is this type
+          usernamePasword(credentials: 'server-credentials', usernameVariable: SERVER_CREDENTIALS_PSW, passwordVariable: SERVER_CREDENTIALS)
+        ]) {
+            sh "some script ${USER} ${PWD}" // need credentials plugin
+        }
       }
     }
   }
