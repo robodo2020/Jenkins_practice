@@ -2,7 +2,6 @@ pipeline {
   // the top level
   agent any // define the env for pipeline to execute (like docker, which image)
   parameters {
-    // string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
     choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
     booleanParam(name: 'executeTests', defaultValue: true, description: '')
   }
@@ -44,19 +43,18 @@ pipeline {
           }
       }
     }
-
-    // execute the logic after all the stages executed
-    post {
-      // conditions
-      always {
-        echo 'the build finished'
-      }
-      failure {
-        echo 'the build fails'
-      }
-      success {
-        echo 'the build success'
-      }
+  }
+  // execute the logic after all the stages executed
+  post {
+    // conditions
+    always {
+      echo 'the build finished'
+    }
+    failure {
+      echo 'the build fails'
+    }
+    success {
+      echo 'the build success'
     }
   }
 }
