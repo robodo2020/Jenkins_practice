@@ -1,6 +1,11 @@
 pipeline {
   // the top level
   agent any // define the env for pipeline to execute (like docker, which image)
+  parameters {
+    string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
+    choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0']m description: '')
+    booleanParam(name: 'executeTests', defaultValue: true, descrition: '')
+  }
   evnironment {
     NEV_VERSION = '1.0.1'
     SERVER_CREDENTIALS = credentials('server-credentials') // defined at jenkins global credential, and should use the ID to define the variable name
@@ -15,9 +20,11 @@ pipeline {
 
     stage('test') {
       when {
-        expression
+        expression {
           // check the current branch, can find here: http://localhost:8080/env-vars.html/
           BRANCH_NAME == 'master' || BRANCH_NAME == 'dev' && CODE_CHANGES == true
+          params.executeTests == true  // the parameters above
+        }
       }
 
       steps {
@@ -28,7 +35,13 @@ pipeline {
     stage('deploy') {
       steps {
           echo 'deploying the apps...'
-          echo "deploying with ${SERVER_CREDENTIALS}"
+          echo "deploying version ${params.VERSION}"
+          // echo "deploying with ${SERVER_CREDENTIALS}"
+          withCredentials([
+            usernamePasword(credentials: 'server-credentials', usernameVariable: USER, passwordVariable: PWD) // usernamePasword is bc the Jenkins I defined the credential is this type
+          ]) {
+            sh "some script ${USER} ${PWD}" // need credentials plugin
+          }
       }
     }
 
