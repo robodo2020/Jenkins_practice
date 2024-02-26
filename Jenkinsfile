@@ -7,7 +7,7 @@ pipeline {
   }
   environment {
     NEV_VERSION = '1.0.1'
-    SERVER_CREDENTIALS = credentials('server-credentials') // defined at jenkins global credential, and should use the ID to define the variable name
+    // SERVER_CREDENTIALS = credentials('server-credentials') // defined at jenkins global credential, and should use the ID to define the variable name
   }
   stages {
     stage('build') {
