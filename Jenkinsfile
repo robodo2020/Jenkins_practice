@@ -1,3 +1,5 @@
+def gv
+
 pipeline {
   // the top level
   agent any // define the env for pipeline to execute (like docker, which image)
@@ -11,10 +13,21 @@ pipeline {
     SERVER_CREDENTIALS = credentials('server-credentials')
   }
   stages {
+    stage('init') {
+      stpes {
+        script {
+          // load the groovy file, and gv we define it as global var above
+          // which allows us to use the external script
+          gv = load 'script.groovy'
+        }
+      }
+    }
+
     stage('build') {
       steps {
-          echo 'building the apps...'
-          echo "building the version ${NEV_VERSION}" // should use double quote instead of single
+          script {
+            gv.buildApp()
+          }
       }
     }
 
@@ -28,15 +41,17 @@ pipeline {
       }
 
       steps {
-          echo 'testing the apps...'
+          script {
+            gv.testApp()
+          }
       }
     }
 
     stage('deploy') {
       steps {
-          echo 'deploying the apps...'
-          echo "deploying version ${params.VERSION}"
-          echo "deploying with ${SERVER_CREDENTIALS}"
+          script {
+            gv.deployApp()
+          }
       }
     }
   }
