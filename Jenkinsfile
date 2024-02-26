@@ -42,7 +42,7 @@ pipeline {
           // usernamePasword is bc the Jenkins I defined the credential is this type
           usernamePasword(credentials: 'server-credentials', usernameVariable: SERVER_CREDENTIALS_PSW, passwordVariable: SERVER_CREDENTIALS)
         ]) {
-            sh "some script ${USER} ${PWD}" // need credentials plugin
+            echo "some script ${USER} ${PWD}" // need credentials plugin
         }
       }
     }
